@@ -1,30 +1,30 @@
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class ObjectRepository {
-    protected HashMap<String, ObjectType> hashMap;
-    private Configurator configurator;
+public class ObjectRepository implements Framework {
+    protected HashMap<String, DataBean> hashMap;
 
     public ObjectRepository() {
         this.hashMap = new HashMap<>();
-        this.configurator = new Configurator();
     }
 
-    public void register(Object object) {
-        this.hashMap.put(object.getClass().getName(), object.getClass().getDeclaredAnnotation(CreationType.class).type());
+    public void register(DataBean dataBean) {
+        this.hashMap.put(dataBean.getClass().getName(), dataBean);
     }
 
     public DataBean getObject(String product) {
-        ObjectType value = hashMap.get(product);
-        if(value == ObjectType.PROTOTYPE) {
-            return new Book();
+        DataBean dataBean = hashMap.get(product);
+        if(dataBean.getClass().getDeclaredAnnotation(CreationType.class).type() == ObjectType.PROTOTYPE) {
+            return clone(dataBean);
         }
-        if(value == ObjectType.SINGLETON){
-            return configurator;
+        if(dataBean.getClass().getDeclaredAnnotation(CreationType.class).type() == ObjectType.SINGLETON){
+            return dataBean;
         }
 
         return null;
+    }
+
+    public DataBean clone(DataBean dataBean) {
+        return dataBean.createData();
     }
 
 }

@@ -7,6 +7,12 @@ public class Book extends DataBean {
     public Book() {
     }
 
+    public Book(int bookNo, String name, String author) {
+        this.bookNo = bookNo;
+        this.name = name;
+        this.author = author;
+    }
+
     public int getBookNo() {
         return this.bookNo;
     }
@@ -19,4 +25,8 @@ public class Book extends DataBean {
         return this.author;
     }
 
+    @Override
+    public DataBean createData() {
+        return new Book(this.bookNo, this.name, this.author);
+    }
 }

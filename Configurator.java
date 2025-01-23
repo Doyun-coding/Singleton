@@ -11,4 +11,8 @@ public class Configurator extends DataBean {
         return this.name;
     }
 
+    @Override
+    public DataBean createData() {
+        return new Configurator();
+    }
 }
